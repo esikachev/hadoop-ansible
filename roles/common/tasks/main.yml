@@ -1,6 +1,6 @@
 ---
-# tasks file for common
-- name: Install java-8
-  yum:
-    name: java-1.8.0-openjdk
-    state: latest
+- user:
+    name: hadoop
+    generate_ssh_key: yes
+    ssh_key_bits: 2048
+    ssh_key_file: .ssh/id_rsa
