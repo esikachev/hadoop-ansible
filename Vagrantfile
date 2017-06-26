@@ -31,8 +31,8 @@ Vagrant.configure(2) do |config|
     config.vm.provision "ansible" do |ansible|
     ansible.playbook = "site.yml"
     ansible.groups = {
-      "hosts" => ["machine[1:3]"],
-      "all:children" => ["hosts"],
+      "java" => ["machine[1:3]"],
+      "all:children" => ["java", "hadoop"],
     }
     ansible.sudo = true
   end
