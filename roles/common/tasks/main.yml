@@ -1,12 +1,39 @@
 ---
 # tasks file for common
-- name: Install java-8
-  yum:
-    name: java-1.8.0-openjdk
-    state: latest
+#- name: Installing of basic packages
+#  yum:
+#    name: "{{ item }}"
+#    state: latest
+#  with_items:
+#    - java-1.8.0-openjdk
+#    - wget
+#    - gcc
 
-- user:
-    name: hadoop
-    generate_ssh_key: yes
-    ssh_key_bits: 2048
-    ssh_key_file: .ssh/id_rsa
+      #- name: Downloading and installing of sshpass
+      #shell: |
+      #wget http://sourceforge.net/projects/sshpass/files/latest/download -O sshpass.tar.gz
+      #tar -xvf sshpass.tar.gz
+      #cd sshpass-1.06
+      #./configure
+      #sudo make install
+
+    #- name: Creating of hadoop-user
+  #user:
+  # name: hadoop
+  # password: "$6$Ttit1ZVLkrC0b/o6$qd5Hvffh5yIxd38bkQFIOFrgxw/PHIWRtrXkb5XZXer6rYuCE7O8nglYQxWXYMWOKzJLC87v6q0GA1v7zbYqa."
+  # generate_ssh_key: yes
+
+    #- name: Allow password authentication
+    #lineinfile: dest=/etc/ssh/sshd_config
+    #         regexp="^PasswordAuthentication"
+    #         line="PasswordAuthentication yes"
+    #         state=present
+    #  notify: Restart ssh
+
+- name: Sync keys for hadoop user
+  shell: |
+      if [[ "{{ hostvars[item]['inventory_hostname_short'] }}" != "{{ inventory_hostname }}" ]];
+      then
+        sshpass -p hadoop ssh-copy-id hadoop@"{{ hostvars[item]['ansible_ssh_host'] }}"
+      fi
+  with_items: "{{ groups['all'] }}"
