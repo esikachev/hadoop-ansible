@@ -20,6 +20,12 @@ Vagrant.configure(2) do |config|
            aws.keypair_name = "aws-esikachev"
            aws.instance_type = "t2.micro"
            aws.security_groups = ["sg-5fb6a638"]
+           aws.block_device_mapping = [
+              {
+                'DeviceName' => "/dev/sda1",
+                'Ebs.DeleteOnTermination' => true
+              }
+           ]
 
           override.ssh.private_key_path = ENV['AWS_PRIVATE_KEY']
         end
