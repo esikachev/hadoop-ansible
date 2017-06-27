@@ -9,28 +9,24 @@
 
 - name: Creating of hadoop-user
   user:
-   name: hadoop
-   password: "$6$Ttit1ZVLkrC0b/o6$qd5Hvffh5yIxd38bkQFIOFrgxw/PHIWRtrXkb5XZXer6rYuCE7O8nglYQxWXYMWOKzJLC87v6q0GA1v7zbYqa."
+   name: "{{ hadoop_user }}"
    generate_ssh_key: yes
 
-- name: Allow password authentication
-  lineinfile: dest=/etc/ssh/sshd_config
-              regexp="^PasswordAuthentication"
-              line="PasswordAuthentication yes"
-              state=present
-  notify: Restart ssh
+- name: Collect public keys form hosts
+  fetch:
+    src: /home/{{ hadoop_user }}/.ssh/id_rsa.pub
+    dest: "{{ playbook_dir }}/public_keys"
 
-- name: ensure private key and public one are present
-  copy:
-    src: "{{ role_path }}/files/{{ item }}"
-    dest: "/home/hadoop/.ssh/{{ item }}"
-    mode: 0600
-  with_items:
-    - id_rsa.pub
-    - id_rsa
-
-- name: Adding of public keys for hadoop user
+- name: Adding of public keys from servers for hadoop user
   authorized_key:
-    user: hadoop
+    user: "{{ hadoop_user }}"
     state: present
-    key: "{{ lookup('file', role_path + '/files/id_rsa.pub') }}"
+    key: "{{ lookup('file', playbook_dir + '/public_keys/' + item + '/home/' + hadoop_user + '/.ssh/id_rsa.pub') }}"
+  with_items: "{{ groups['all'] }}"
+  when: inventory_hostname != item
+
+- name: Adding of local public key for hadoop user
+  authorized_key:
+    user: "{{ hadoop_user }}"
+    state: present
+    key: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_rsa.pub') }}"
