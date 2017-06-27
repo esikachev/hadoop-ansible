@@ -25,15 +25,17 @@ Vagrant.configure(2) do |config|
         end
 
         machine.vm.hostname = "machine#{machine_id}"
+        if machine_id == N
+          machine.vm.provision :ansible do |ansible|
+            ansible.limit = "all,localhost"
+            ansible.playbook = "site.yml"
+            ansible.groups = {
+              "hadoop_hosts" => ["machine[1:3]"],
+              "all:children" => ["hadoop_hosts"],
+            }
+            ansible.sudo = true
+          end
+        end
       end
-   end 
-
-    config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "site.yml"
-    ansible.groups = {
-      "hadoop_hosts" => ["machine[1:3]"],
-      "all:children" => ["hadoop_hosts"],
-    }
-    ansible.sudo = true
   end
 end

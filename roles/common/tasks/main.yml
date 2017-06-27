@@ -30,10 +30,17 @@
               state=present
   notify: Restart ssh
 
-- name: Sync keys for hadoop user
-  shell: |
-      if [[ "{{ hostvars[item]['inventory_hostname_short'] }}" != "{{ inventory_hostname }}" ]];
-      then
-        sshpass -p hadoop ssh-copy-id hadoop@"{{ hostvars[item]['ansible_ssh_host'] }}"
-      fi
-  with_items: "{{ groups['all'] }}"
+- name: ensure private key and public one are present
+  copy:
+    src: "{{ role_path }}/files/{{ item }}"
+    dest: "/home/hadoop/.ssh/{{ item }}"
+    mode: 0600
+  with_items:
+    - id_rsa.pub
+    - id_rsa
+
+- name: Adding of public keys for hadoop user
+  authorized_key:
+    user: hadoop
+    state: present
+    key: "{{ lookup('file', role_path + '/files/id_rsa.pub') }}"
