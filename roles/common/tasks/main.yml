@@ -6,16 +6,6 @@
     state: latest
   with_items:
     - java-1.8.0-openjdk
-    - wget
-    - gcc
-
-- name: Downloading and installing of sshpass
-  shell: |
-    wget http://sourceforge.net/projects/sshpass/files/latest/download -O sshpass.tar.gz
-    tar -xvf sshpass.tar.gz
-    cd sshpass-1.06
-    ./configure
-    sudo make install
 
 - name: Creating of hadoop-user
   user:
