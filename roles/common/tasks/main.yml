@@ -25,8 +25,12 @@
   with_items: "{{ groups['all'] }}"
   when: inventory_hostname != item
 
-- name: Adding of local public key for hadoop user
+- name: Adding of local public key for users
   authorized_key:
-    user: "{{ hadoop_user }}"
+    user: "{{ item }}"
     state: present
     key: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_rsa.pub') }}"
+  with_items:
+    - cenots
+    - vagrant
+    - "{{ hadoop_user }}"
