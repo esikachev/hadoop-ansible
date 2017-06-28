@@ -36,8 +36,10 @@ Vagrant.configure(2) do |config|
             ansible.limit = "all,localhost"
             ansible.playbook = "site.yml"
             ansible.groups = {
-              "hadoop_hosts" => ["machine[1:3]"],
-              "all:children" => ["hadoop_hosts"],
+              "hadoop"       => ["machine[1:3]"],
+              "namenodes"    => ["machine1"],
+              "datanodes"    => ["machine[2:3]"],
+              "all:children" => ["hadoop"],
             }
             ansible.sudo = true
           end

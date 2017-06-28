@@ -1,4 +1,17 @@
 ---
 - hosts: all
   roles:
-    - common
+      #   - common
+    - { role: hadoop, deploy: 'base' }
+
+- name: Deploy namenodes
+  tags: namenodes
+  hosts: namenodes
+  roles:
+    - { role: hadoop, deploy: 'namenodes' }
+
+- name: Deploy datanodes
+  tags: datanodes
+  hosts: datanodes
+  roles:
+    - { role: hadoop, deploy: 'datanodes' }

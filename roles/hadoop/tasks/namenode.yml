@@ -1,0 +1,13 @@
+- name: Install namenode package
+  tags: package
+  yum:  name=hadoop-hdfs-namenode state=latest
+
+- name: Install namenode default configurations
+  template: src=default/{{ item }}.j2 dest=/etc/default/{{ item }}
+  with_items:
+    - hadoop-hdfs-namenode
+
+- name: Create namenode directories
+  tags: init
+  file: dest={{ item }} owner={{ hadoop_user }} group={{ hadoop_user }} state=directory
+  with_items: "{{ dfs_namenode_name_dir.replace('file://','').split(',') }}"
