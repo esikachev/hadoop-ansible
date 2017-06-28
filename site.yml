@@ -1,7 +1,7 @@
 ---
 - hosts: all
   roles:
-      #   - common
+    - common
     - { role: hadoop, deploy: 'base' }
 
 - name: Deploy namenodes
