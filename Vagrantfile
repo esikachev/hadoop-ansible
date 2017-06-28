@@ -20,20 +20,28 @@ Vagrant.configure(2) do |config|
            aws.keypair_name = "aws-esikachev"
            aws.instance_type = "t2.micro"
            aws.security_groups = ["sg-5fb6a638"]
+           aws.block_device_mapping = [
+              {
+                'DeviceName' => "/dev/sda1",
+                'Ebs.DeleteOnTermination' => true
+              }
+           ]
 
           override.ssh.private_key_path = ENV['AWS_PRIVATE_KEY']
         end
 
         machine.vm.hostname = "machine#{machine_id}"
+        if machine_id == N
+          machine.vm.provision :ansible do |ansible|
+            ansible.limit = "all,localhost"
+            ansible.playbook = "site.yml"
+            ansible.groups = {
+              "hadoop_hosts" => ["machine[1:3]"],
+              "all:children" => ["hadoop_hosts"],
+            }
+            ansible.sudo = true
+          end
+        end
       end
-   end 
-
-    config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "site.yml"
-    ansible.groups = {
-      "hadoop_hosts" => ["machine[1:3]"],
-      "all:children" => ["hadoop_hosts"],
-    }
-    ansible.sudo = true
   end
 end
