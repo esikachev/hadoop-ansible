@@ -6,3 +6,6 @@
 
 - include: datanode.yml
   when: deploy == "datanodes"
+
+- include: test_hdfs.yml
+  when: deploy == "test_hdfs"
