@@ -1,0 +1,8 @@
+- include: base.yml
+  when: deploy == "base"
+
+- include: namenode.yml
+  when: deploy == "namenodes"
+
+- include: datanode.yml
+  when: deploy == "datanodes"

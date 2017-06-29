@@ -1,1 +1,9 @@
-hadoop_user: hadoop
+hadoop_user: hdfs
+
+java_home: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.131-3.b12.el7_3.x86_64/jre
+
+zookeeper_data_dir: /var/lib/zookeeper
+log_folder: /var/log
+etc_folder: /etc/cluster
+
+destroy_data: True

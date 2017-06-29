@@ -1,11 +1,32 @@
 ---
 # tasks file for common
+- name: Adding of custom repositories
+  get_url:
+    url: http://archive.cloudera.com/cdh4/redhat/6/x86_64/cdh/cloudera-cdh4.repo
+    dest: /etc/yum.repos.d/cdh-4.repo
+
 - name: Installing of basic packages
   yum:
     name: "{{ item }}"
     state: latest
   with_items:
     - java-1.8.0-openjdk
+    - bigtop-utils
+    - redhat-lsb-core
+
+- name: Install template configurations
+  tags: config
+  template: src={{ item }}.j2 dest=/etc/default/{{ item }}
+  with_items:
+    - bigtop-utils
+
+- name: create directories
+  tags: config
+  file: path="{{ item | regex_replace('[^/]+/*$','') }}" state=directory owner=root group=root mode=755 follow=yes
+  with_items:
+    - "{{ zookeeper_data_dir }}"
+    - "{{ log_folder }}"
+    - "{{ etc_folder }}"
 
 - name: Creating of hadoop-user
   user:
