@@ -7,7 +7,23 @@
   with_items:
     - hadoop-hdfs-namenode
 
+- name: Destroy data
+  tags: init
+  command: rm -rf {{ item }}
+  with_items: "{{ dfs_namenode_name_dir.replace('file://','').split(',') }}"
+  when: destroy_data
+
 - name: Create namenode directories
   tags: init
   file: dest={{ item }} owner={{ hadoop_user }} group={{ hadoop_user }} state=directory
   with_items: "{{ dfs_namenode_name_dir.replace('file://','').split(',') }}"
+
+- name: Format primary namenode
+  tags: init
+  command: sudo -Hu hdfs hdfs namenode -format -force
+  when: inventory_hostname == groups['namenodes'][0] and destroy_data
+
+- name: Start primary namenode
+  tags: service
+  service: name=hadoop-hdfs-namenode state=restarted enabled=yes
+  when: inventory_hostname == groups['namenodes'][0]
