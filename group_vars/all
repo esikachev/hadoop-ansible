@@ -1,4 +1,6 @@
 hadoop_user: hdfs
+yarn_user: yarn
+mapred_user: mapred
 
 java_home: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.131-3.b12.el7_3.x86_64/jre
 
@@ -7,3 +9,23 @@ log_folder: /var/log
 etc_folder: /etc/cluster
 
 destroy_data: True
+
+yarn_nodemanager_local_dirs: 'file:///var/lib/hadoop-yarn/cache/${user.name}/nm-local-dir'
+yarn_nodemanager_log_dirs: 'file:///var/log/hadoop-yarn/containers'
+yarn_nodemanager_resource_memory: 4096
+yarn_nodemanager_resource_cpu: 10
+
+dfs_namenode_name_dir: 'file:///var/lib/hadoop-hdfs/cache/hdfs/dfs/name'
+dfs_datanode_data_dir: 'file:///var/lib/hadoop-hdfs/cache/hdfs/dfs/data'
+dfs_journalnode_edits_dir: '/var/lib/hadoop-hdfs/cache/hdfs/dfs/journal'
+
+dfs_replication: 1
+
+fs_permissions_umask: '022'
+
+oozie_launcher_maxapps: 10
+oozie_launcher_weight: 1.0
+
+namenode_heapsize: 2048
+datanode_heapsize: 2048
+nodemanager_heapsize: 2048

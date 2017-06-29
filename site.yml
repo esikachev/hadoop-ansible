@@ -15,3 +15,9 @@
   hosts: datanodes
   roles:
     - { role: hadoop, deploy: 'datanodes' }
+
+- name: Deploy yarn resource manager
+  tags: yarnresourcemanager
+  hosts: namenodes
+  roles:
+    - { role: hadoop, deploy: 'resourcemanager' }

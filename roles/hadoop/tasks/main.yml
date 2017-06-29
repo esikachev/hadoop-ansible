@@ -6,3 +6,6 @@
 
 - include: datanode.yml
   when: deploy == "datanodes"
+
+- include: resourcemanager.yml
+  when: deploy == "resourcemanager"

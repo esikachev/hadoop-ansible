@@ -10,7 +10,7 @@
     name: "{{ item }}"
     state: latest
   with_items:
-    - java-1.8.0-openjdk
+    - java-1.8.0
     - bigtop-utils
     - redhat-lsb-core
 
@@ -28,10 +28,14 @@
     - "{{ log_folder }}"
     - "{{ etc_folder }}"
 
-- name: Creating of hadoop-user
+- name: Creating of hadoop users
   user:
-   name: "{{ hadoop_user }}"
+   name: "{{ item }}"
    generate_ssh_key: yes
+  with_items:
+    - "{{ hadoop_user }}"
+    - "{{ yarn_user }}"
+    - "{{ mapred_user }}"
 
 - name: Collect public keys form hosts
   fetch:

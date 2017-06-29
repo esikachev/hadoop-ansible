@@ -17,13 +17,21 @@
   template: src={{ item }}.j2 dest={{ etc_folder }}/hadoop/{{ item }}
   with_items:
     - core-site.xml
+    - fair-scheduler.xml
     - hdfs-site.xml
+    - mapred-site.xml
+    - yarn-site.xml
+    - hadoop-env.sh
+    - mapred-env.sh
+    - yarn-env.sh
 
 - name: Install files configurations
   tags: config
   copy: src={{ item }} dest={{ etc_folder }}/hadoop/{{ item }}
   with_items:
+    - capacity-scheduler.xml
     - configuration.xsl
+    - container-executor.cfg
     - dfs.exclude
     - hadoop-metrics.properties
     - hadoop-metrics2.properties
@@ -40,7 +48,9 @@
   tags: config
   file: path={{ log_folder }}/{{ item }} state=directory owner={{ item }} mode=0755
   with_items:
-    - hdfs
+    - "{{ hadoop_user }}"
+    - "{{ yarn_user }}"
+    - "{{ mapred_user }}"
 
 - name: Install hdfs-ready utility
   tags: config
