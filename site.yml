@@ -2,6 +2,15 @@
 - hosts: all
   roles:
     - common
+
+      #- name: Deploy zookeeper
+      #  hosts: zookeepernodes
+      #  tags: zookeepernodes
+      #  roles:
+      #    - zookeeper
+
+- hosts: all
+  roles:
     - { role: hadoop, deploy: 'base' }
 
 - name: Deploy namenodes
@@ -18,6 +27,6 @@
 
 - name: Deploy yarn resource manager
   tags: yarnresourcemanager
-  hosts: namenodes
+  hosts: yarnresourcemanager
   roles:
     - { role: hadoop, deploy: 'resourcemanager' }

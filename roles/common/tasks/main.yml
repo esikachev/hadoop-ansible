@@ -1,5 +1,12 @@
 ---
 # tasks file for common
+- name: Add IP address of all hosts to all hosts
+  lineinfile:
+    dest: /etc/hosts
+    line: "{{ hostvars[item].ansible_eth0.ipv4.address }} {{ hostvars[item].inventory_hostname }} {{ hostvars[item].inventory_hostname }}"
+    state: present
+  with_items: "{{ groups.all }}"
+
 - name: Adding of custom repositories
   get_url:
     url: http://archive.cloudera.com/cdh4/redhat/6/x86_64/cdh/cloudera-cdh4.repo
@@ -20,7 +27,7 @@
   with_items:
     - bigtop-utils
 
-- name: create directories
+- name: Create directories
   tags: config
   file: path="{{ item | regex_replace('[^/]+/*$','') }}" state=directory owner=root group=root mode=755 follow=yes
   with_items:
