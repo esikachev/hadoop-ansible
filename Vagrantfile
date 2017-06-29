@@ -36,11 +36,13 @@ Vagrant.configure(2) do |config|
             ansible.limit = "all,localhost"
             ansible.playbook = "site.yml"
             ansible.groups = {
-              "hadoop"       => ["machine[1:3]"],
-              "namenodes"    => ["machine1"],
-              "datanodes"    => ["machine[2:3]"],
+              "hadoop"       => ["machine[1:]"],
               "all:children" => ["hadoop"],
             }
+            if N > 1
+              ansible.groups["namenodes"] = "machine1"
+              ansible.groups["datanodes"] = "machine[2:#{N}]"
+            end
             ansible.sudo = true
           end
         end
