@@ -1,0 +1,4 @@
+- name: Test mapreduce
+  tags: test
+  shell: sudo -Hu hdfs hadoop jar /usr/lib/hadoop-mapreduce/hadoop-mapreduce-examples.jar pi 1 1
+  run_once: true

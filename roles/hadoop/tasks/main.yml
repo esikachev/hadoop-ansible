@@ -12,3 +12,6 @@
 
 - include: test_hdfs.yml
   when: deploy == "test_hdfs"
+
+- include: test_mapreduce.yml
+  when: deploy == "test_mapreduce"

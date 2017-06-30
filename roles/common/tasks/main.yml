@@ -17,9 +17,11 @@
     name: "{{ item }}"
     state: latest
   with_items:
+    - unzip
     - java-1.8.0
     - bigtop-utils
     - redhat-lsb-core
+    - hadoop-mapreduce
 
 - name: Install template configurations
   tags: config
@@ -39,6 +41,7 @@
   user:
    name: "{{ item }}"
    generate_ssh_key: yes
+   group: hadoop
   with_items:
     - "{{ hadoop_user }}"
     - "{{ yarn_user }}"

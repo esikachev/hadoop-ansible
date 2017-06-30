@@ -46,7 +46,7 @@
 
 - name: Create log folders
   tags: config
-  file: path={{ log_folder }}/{{ item }} state=directory owner={{ item }} mode=0755
+  file: path={{ log_folder }}/{{ item }} state=directory owner={{ item }} mode=0775
   with_items:
     - "{{ hadoop_user }}"
     - "{{ yarn_user }}"
@@ -55,3 +55,9 @@
 - name: Install hdfs-ready utility
   tags: config
   template: src=bin/hdfs-ready.sh dest={{ etc_folder }}/hadoop/hdfs-ready.sh mode=0755
+
+- name: Add variables to /etc/bashrc
+  lineinfile:
+    dest: "/home/{{ hadoop_user }}/.bashrc"
+    line: export HADOOP_MAPRED_HOME=/usr/lib/hadoop-mapreduce/
+    state: present

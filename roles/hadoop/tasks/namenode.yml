@@ -15,7 +15,7 @@
 
 - name: Create namenode directories
   tags: init
-  file: dest={{ item }} owner={{ hadoop_user }} group={{ hadoop_user }} state=directory
+  file: dest={{ item }} owner={{ hadoop_user }} group={{ hadoop_group }} state=directory
   with_items: "{{ dfs_namenode_name_dir.replace('file://','').split(',') }}"
 
 - name: Format primary namenode

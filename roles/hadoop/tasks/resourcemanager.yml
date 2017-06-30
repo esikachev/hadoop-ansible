@@ -25,7 +25,7 @@
     - -chmod 1777 /var/log/hadoop-yarn/apps
   run_once: true
 
-- name: Start services
+- name: Start resourcemanager
   tags: service
   service: name={{ item }} state=restarted enabled=yes
   with_items:

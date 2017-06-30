@@ -1,6 +1,7 @@
 hadoop_user: hdfs
 yarn_user: yarn
 mapred_user: mapred
+hadoop_group: hadoop
 
 java_home: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.131-3.b12.el7_3.x86_64/jre
 
@@ -29,3 +30,5 @@ oozie_launcher_weight: 1.0
 namenode_heapsize: 2048
 datanode_heapsize: 2048
 nodemanager_heapsize: 2048
+
+dashboard_folder: /var/www/html/dashboard
