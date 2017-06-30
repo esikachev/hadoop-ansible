@@ -1,0 +1,7 @@
+- name: Test hdfs
+  tags: test
+  command: sudo -Hu hdfs hdfs dfs {{ item }} /ansible_hdfs_test
+  with_items:
+    - -touchz
+    - -rm
+  run_once: true

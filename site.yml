@@ -25,6 +25,12 @@
   roles:
     - { role: hadoop, deploy: 'datanodes' }
 
+- name: Test hdfs
+  tags: test
+  hosts: namenodes
+  roles:
+    - { role: hadoop, deploy: 'test_hdfs' }
+
 - name: Deploy yarn resource manager
   tags: yarnresourcemanager
   hosts: yarnresourcemanager

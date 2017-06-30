@@ -1,7 +1,0 @@
-dfs_namenode_name_dir: 'file:///var/lib/hadoop-hdfs/cache/hdfs/dfs/name'
-dfs_datanode_data_dir: 'file:///var/lib/hadoop-hdfs/cache/hdfs/dfs/data'
-dfs_journalnode_edits_dir: '/var/lib/hadoop-hdfs/cache/hdfs/dfs/journal'
-
-dfs_replication: 1
-
-fs_permissions_umask: '022'

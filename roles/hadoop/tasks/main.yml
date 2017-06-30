@@ -9,3 +9,6 @@
 
 - include: resourcemanager.yml
   when: deploy == "resourcemanager"
+
+- include: test_hdfs.yml
+  when: deploy == "test_hdfs"
