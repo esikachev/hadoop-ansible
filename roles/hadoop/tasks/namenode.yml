@@ -20,7 +20,9 @@
 
 - name: Format primary namenode
   tags: init
-  command: sudo -Hu hdfs hdfs namenode -format -force
+  command: hdfs namenode -format -force
+  become: true
+  become_user: "{{ hadoop_user }}"
   when: inventory_hostname == groups['namenodes'][0] and destroy_data
 
 - name: Start primary namenode

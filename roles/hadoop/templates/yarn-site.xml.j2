@@ -5,10 +5,10 @@
 
   <property>
     <name>yarn.nodemanager.aux-services</name>
-    <value>mapreduce_shuffle</value>
+    <value>mapreduce.shuffle</value>
   </property>
   <property>
-    <name>yarn.nodemanager.aux-services.mapreduce_shuffle.class</name>
+    <name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name>
     <value>org.apache.hadoop.mapred.ShuffleHandler</value>
   </property>
   <property>
@@ -156,37 +156,37 @@
     <value>true</value>
   </property>
 
+{% endif %}
 {% for item in groups['yarnresourcemanager'] %}
   <property>
-    <name>yarn.resourcemanager.address.{{ item }}</name>
+    <name>yarn.resourcemanager.address</name>
     <value>{{ item }}:8032</value>
   </property>
 
   <property>
-    <name>yarn.resourcemanager.scheduler.address.{{ item }}</name>
+    <name>yarn.resourcemanager.scheduler.address</name>
     <value>{{ item }}:8030</value>
   </property>
 
   <property>
-    <name>yarn.resourcemanager.webapp.https.address.{{ item }}</name>
+    <name>yarn.resourcemanager.webapp.https.address</name>
     <value>{{ item }}:8090</value>
   </property>
 
   <property>
-    <name>yarn.resourcemanager.webapp.address.{{ item }}</name>
+    <name>yarn.resourcemanager.webapp.address</name>
     <value>{{ item }}:8088</value>
   </property>
 
   <property>
-    <name>yarn.resourcemanager.resource-tracker.address.{{ item }}</name>
+    <name>yarn.resourcemanager.resource-tracker.address</name>
     <value>{{ item }}:8031</value>
   </property>
 
   <property>
-    <name>yarn.resourcemanager.admin.address.{{ item }}</name>
+    <name>yarn.resourcemanager.admin.address</name>
     <value>{{ item }}:8033</value>
   </property>
 {% endfor %}
-{% endif %}
 
 </configuration>

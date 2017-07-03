@@ -30,7 +30,9 @@
     - hadoop-hdfs-datanode
  
 - name: Add permissions for all users to HDFS
-  command: sudo -u hdfs hadoop fs -chmod 777 /
+  command: hadoop fs -chmod 777 /
+  become: true
+  become_user: "{{ hadoop_user }}"
 
 - name: Start services
   tags: service

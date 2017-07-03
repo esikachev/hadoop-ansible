@@ -13,6 +13,12 @@
   roles:
     - { role: hadoop, deploy: 'namenodes' }
 
+- name: Deploy yarn resource manager
+  tags: yarnresourcemanager
+  hosts: yarnresourcemanager
+  roles:
+    - { role: hadoop, deploy: 'resourcemanager' }
+
 - name: Deploy datanodes
   tags: datanodes
   hosts: datanodes
@@ -24,12 +30,6 @@
   hosts: namenodes
   roles:
     - { role: hadoop, deploy: 'test_hdfs' }
-
-- name: Deploy yarn resource manager
-  tags: yarnresourcemanager
-  hosts: yarnresourcemanager
-  roles:
-    - { role: hadoop, deploy: 'resourcemanager' }
 
 - name: Test mapreduce
   tags: test

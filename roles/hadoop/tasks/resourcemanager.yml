@@ -12,7 +12,7 @@
 
 - name: Configure hdfs directories
   tags: config
-  command: sudo -Hu hdfs hdfs dfs {{ item }}
+  command: hdfs dfs {{ item }}
   with_items:
     - -mkdir -p /tmp
     - -chmod 1777 /tmp
@@ -24,6 +24,8 @@
     - -chown yarn:hadoop /var/log/hadoop-yarn/apps
     - -chmod 1777 /var/log/hadoop-yarn/apps
   run_once: true
+  become: true
+  become_user: "{{ hadoop_user }}"
 
 - name: Start resourcemanager
   tags: service

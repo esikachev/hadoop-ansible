@@ -1,7 +1,9 @@
 - name: Test hdfs
   tags: test
-  command: sudo -Hu hdfs hdfs dfs {{ item }} /ansible_hdfs_test
+  command: hdfs dfs {{ item }} /ansible_hdfs_test
   with_items:
     - -touchz
     - -rm
+  become: true
+  become_user: "{{ hadoop_user }}"
   run_once: true
