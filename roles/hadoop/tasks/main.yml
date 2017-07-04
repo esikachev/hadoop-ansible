@@ -7,5 +7,11 @@
 - include: datanode.yml
   when: deploy == "datanodes"
 
+- include: resourcemanager.yml
+  when: deploy == "resourcemanager"
+
 - include: test_hdfs.yml
   when: deploy == "test_hdfs"
+
+- include: test_mapreduce.yml
+  when: deploy == "test_mapreduce"

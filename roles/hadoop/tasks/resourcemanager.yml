@@ -1,0 +1,34 @@
+- name: Install resource manager package
+  tags: package
+  yum:  name={{ item }} state=latest
+  with_items:
+    - hadoop-yarn-resourcemanager
+
+- name: Install default configurations
+  tags: config
+  copy: src=default/{{ item }} dest=/etc/default/{{ item }}
+  with_items:
+    - hadoop-yarn-resourcemanager
+
+- name: Configure hdfs directories
+  tags: config
+  command: hdfs dfs {{ item }}
+  with_items:
+    - -mkdir -p /tmp
+    - -chmod 1777 /tmp
+    - -mkdir -p /user/history
+    - -chmod 1777 /user/history
+    - -chown mapred:hadoop /user/history
+    - -mkdir -p /var/log/hadoop-yarn/apps
+    - -chown yarn:mapred /var/log/hadoop-yarn
+    - -chown yarn:hadoop /var/log/hadoop-yarn/apps
+    - -chmod 1777 /var/log/hadoop-yarn/apps
+  run_once: true
+  become: true
+  become_user: "{{ hadoop_user }}"
+
+- name: Start resourcemanager
+  tags: service
+  service: name={{ item }} state=restarted enabled=yes
+  with_items:
+    - hadoop-yarn-resourcemanager

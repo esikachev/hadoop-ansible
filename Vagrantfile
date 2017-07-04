@@ -17,8 +17,8 @@ Vagrant.configure(2) do |config|
            aws.subnet_id = "subnet-1d46ee79"
            aws.associate_public_ip = true
            aws.ami =  "ami-f5d7f195"
-           aws.keypair_name = "aws-esikachev"
-           aws.instance_type = "t2.micro"
+           aws.keypair_name = ENV['AWS_PRIVATE_KEY_NAME']
+           aws.instance_type = "t2.medium"
            aws.security_groups = ["sg-5fb6a638"]
            aws.block_device_mapping = [
               {
@@ -36,11 +36,13 @@ Vagrant.configure(2) do |config|
             ansible.limit = "all,localhost"
             ansible.playbook = "site.yml"
             ansible.groups = {
-              "hadoop"       => ["machine[1:]"],
+              "hadoop"       => ["machine[1:#{N}]"],
               "all:children" => ["hadoop"],
             }
             if N > 1
               ansible.groups["namenodes"] = "machine1"
+              ansible.groups["oozie"] = "machine1"
+              ansible.groups["yarnresourcemanager"] = "machine1"
               ansible.groups["datanodes"] = "machine[2:#{N}]"
             end
             ansible.sudo = true

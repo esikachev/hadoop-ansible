@@ -1,0 +1,6 @@
+- name: Test mapreduce
+  tags: test
+  shell: "source /home/{{ hadoop_user }}/.bashrc && hadoop jar /usr/lib/hadoop-mapreduce/hadoop-mapreduce-examples.jar pi 1 1"
+  become: true
+  become_user: "{{ hadoop_user }}"
+  run_once: true

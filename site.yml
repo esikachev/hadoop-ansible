@@ -2,6 +2,9 @@
 - hosts: all
   roles:
     - common
+
+- hosts: all
+  roles:
     - { role: hadoop, deploy: 'base' }
 
 - name: Deploy namenodes
@@ -9,6 +12,12 @@
   hosts: namenodes
   roles:
     - { role: hadoop, deploy: 'namenodes' }
+
+- name: Deploy yarn resource manager
+  tags: yarnresourcemanager
+  hosts: yarnresourcemanager
+  roles:
+    - { role: hadoop, deploy: 'resourcemanager' }
 
 - name: Deploy datanodes
   tags: datanodes
@@ -21,3 +30,9 @@
   hosts: namenodes
   roles:
     - { role: hadoop, deploy: 'test_hdfs' }
+
+- name: Test mapreduce
+  tags: test
+  hosts: yarnresourcemanager
+  roles:
+    - { role: hadoop, deploy: 'test_mapreduce' }

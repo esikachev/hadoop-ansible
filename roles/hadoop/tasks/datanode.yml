@@ -3,6 +3,7 @@
   yum:  name={{ item }} state=latest
   with_items:
     - hadoop-hdfs-datanode
+    - hadoop-yarn-nodemanager
 
 - name: Destroy data
   tags: init
@@ -11,17 +12,31 @@
   when: destroy_data
 
 - name: Create datanode directories
-  file: dest={{ item }} owner={{ hadoop_user }} group={{ hadoop_user }} state=directory
+  file: dest={{ item }} owner={{ hadoop_user }} group={{ hadoop_group }} state=directory
   with_items: "{{ dfs_datanode_data_dir.replace('file://','').split(',') }}"
+
+- name: Create yarn local directories
+  file: dest={{ item }} owner={{ yarn_user }} group={{ hadoop_group }} state=directory
+  with_items: "{{ yarn_nodemanager_local_dirs.replace('file://','').split(',') }}"
+
+- name: Create yarn log directories
+  file: dest={{ item }} owner={{ yarn_user }} group={{ hadoop_group }} state=directory
+  with_items: "{{ yarn_nodemanager_log_dirs.replace('file://','').split(',') }}"
 
 - name: Install default configurations
   tags: config
   template: src=default/{{ item }}.j2 dest=/etc/default/{{ item }}
   with_items:
     - hadoop-hdfs-datanode
+ 
+- name: Add permissions for all users to HDFS
+  command: hadoop fs -chmod 777 /
+  become: true
+  become_user: "{{ hadoop_user }}"
 
 - name: Start services
   tags: service
   service: name={{ item }} state=restarted enabled=yes
   with_items:
     - hadoop-hdfs-datanode
+    - hadoop-yarn-nodemanager
