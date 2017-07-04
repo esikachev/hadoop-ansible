@@ -3,6 +3,8 @@ yarn_user: yarn
 mapred_user: mapred
 hadoop_group: hadoop
 
+cluster_name: manual-hadoop
+
 java_home: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.131-3.b12.el7_3.x86_64/jre
 
 zookeeper_data_dir: /var/lib/zookeeper
@@ -32,3 +34,10 @@ datanode_heapsize: 2048
 nodemanager_heapsize: 2048
 
 dashboard_folder: /var/www/html/dashboard
+
+num_io_threads: 8
+log_dirs: /tmp/kafka-logs
+log_retention_hours: 168
+controlled_shutdown_enable: true
+auto_create_topics_enable: true
+delete_topic_enable: true

@@ -7,10 +7,20 @@
     state: present
   with_items: "{{ groups.all }}"
 
-- name: Adding of custom repositories
+- name: Adding of Cloudera repository
   get_url:
     url: http://archive.cloudera.com/cdh4/redhat/6/x86_64/cdh/cloudera-cdh4.repo
     dest: /etc/yum.repos.d/cdh-4.repo
+
+- name: Adding of Bigtop repository
+  get_url:
+    url: http://www.apache.org/dist/bigtop/bigtop-1.2.0/repos/centos6/bigtop.repo
+    dest: /etc/yum.repos.d/bigtop.repo
+
+- name: Adding of Bigtop GPG keys
+  get_url:
+    url: https://dist.apache.org/repos/dist/release/bigtop/KEYS
+    dest: /etc/pki/rpm-gpg/Bigtop
 
 - name: Installing of basic packages
   yum:
