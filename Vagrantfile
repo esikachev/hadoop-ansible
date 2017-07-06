@@ -5,7 +5,7 @@ Vagrant.configure(2) do |config|
   config.ssh.username = "centos"
   config.vm.synced_folder ".", disabled: true
   
-  N = 3
+  N = 4
     (1..N).each do |machine_id|
 
       config.vm.define "machine#{machine_id}" do |machine|
@@ -44,7 +44,10 @@ Vagrant.configure(2) do |config|
               ansible.groups["oozie"] = "machine1"
               ansible.groups["yarnresourcemanager"] = "machine1"
               ansible.groups["zookeepernodes"] = "machine1"
-              ansible.groups["datanodes"] = "machine[2:#{N}]"
+            end
+            if N > 3
+              ansible.groups["kafka"] = "machine2"
+              ansible.groups["datanodes"] = "machine[3:#{N}]"
             end
             ansible.sudo = true
           end

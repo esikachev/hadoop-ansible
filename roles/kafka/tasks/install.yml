@@ -1,0 +1,54 @@
+- name: Install packages
+  tags: packages
+  yum: name={{ item }} state=latest
+  with_items:
+    - kafka-server
+
+- name: Create configuration directory
+  file: path=/etc/kafka/conf.{{ cluster_name }} state=directory
+
+- name: Setup alternatives link
+  alternatives: name=kafka-conf link=/etc/kafka/conf path=/etc/kafka/conf.{{ cluster_name }}
+
+- name: Install default configurations
+  tags: config
+  copy: src=default/{{ item }} dest=/etc/default/{{ item }}
+  with_items:
+    - kafka
+
+- name: Install template configurations
+  tags: config
+  template: src={{ item }}.j2 dest=/etc/kafka/conf/{{ item }}
+  with_items:
+    - server.properties
+
+- name: Install files configurations
+  tags: config
+  copy: src={{ item }} dest=/etc/kafka/conf/{{ item }}
+  with_items:
+    - connect-console-sink.properties
+    - connect-console-source.properties
+    - connect-distributed.properties
+    - connect-file-sink.properties
+    - connect-file-source.properties
+    - connect-log4j.properties
+    - connect-standalone.properties
+    - log4j.properties
+    - tools-log4j.properties
+
+- name: Destroy data
+  tags: init
+  command: rm -rf {{ item }}
+  with_items: "{{ log_dirs.split(',') }}"
+  when: destroy_data
+
+- name: Create kafka directories
+  tags: init
+  file: dest={{ item }} owner=kafka group=kafka state=directory
+  with_items: "{{ log_dirs.split(',') }}"
+
+- name: Start services
+  tags: service
+  service: name={{ item }} state=restarted enabled=yes
+  with_items:
+    - kafka-server

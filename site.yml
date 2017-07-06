@@ -42,3 +42,10 @@
   hosts: yarnresourcemanager
   roles:
     - { role: hadoop, deploy: 'test_mapreduce' }
+
+- name: Deploy kafka
+  tags: kafka
+  hosts: kafka
+  roles:
+    - { role: kafka, deploy: 'install' }
+    - { role: kafka, deploy: 'test_kafka' }

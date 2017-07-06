@@ -1,0 +1,5 @@
+- include: install.yml
+  when: deploy == "install"
+
+- include: test_kafka.yml
+  when: deploy == "test_kafka"
