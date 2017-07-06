@@ -18,7 +18,7 @@ Vagrant.configure(2) do |config|
            aws.associate_public_ip = true
            aws.ami =  "ami-f5d7f195"
            aws.keypair_name = ENV['AWS_PRIVATE_KEY_NAME']
-           aws.instance_type = "t2.medium"
+           aws.instance_type = "t2.micro"
            aws.security_groups = ["sg-5fb6a638"]
            aws.block_device_mapping = [
               {
@@ -43,6 +43,7 @@ Vagrant.configure(2) do |config|
               ansible.groups["namenodes"] = "machine1"
               ansible.groups["oozie"] = "machine1"
               ansible.groups["yarnresourcemanager"] = "machine1"
+              ansible.groups["zookeepernodes"] = "machine1"
               ansible.groups["datanodes"] = "machine[2:#{N}]"
             end
             ansible.sudo = true

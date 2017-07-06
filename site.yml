@@ -7,6 +7,12 @@
   roles:
     - { role: hadoop, deploy: 'base' }
 
+- name: Deploy zookeeper
+  hosts: zookeepernodes
+  tags: zookeepernodes
+  roles:
+    - zookeeper
+
 - name: Deploy namenodes
   tags: namenodes
   hosts: namenodes
