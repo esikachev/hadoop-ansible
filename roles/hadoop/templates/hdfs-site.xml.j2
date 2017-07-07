@@ -12,26 +12,26 @@
   <property>
     <name>dfs.ha.namenodes.{{ cluster_name }}</name>
     <value>{% for item in groups['namenodes'] -%}
-              {{ item }}{% if not loop.last %},{% endif %}
+              {{ hostvars[item].ansible_ssh_host }}{% if not loop.last %},{% endif %}
            {%- endfor %}</value>
   </property>
 
 {% for item in groups['namenodes'] %}
   <property>
-    <name>dfs.namenode.rpc-address.{{ cluster_name }}.{{ item }}</name>
-    <value>{{ item }}:8020</value>
+    <name>dfs.namenode.rpc-address.{{ cluster_name }}.{{ hostvars[item].ansible_ssh_host }}</name>
+    <value>{{ hostvars[item].ansible_ssh_host }}:8020</value>
   </property>
 
   <property>
-    <name>dfs.namenode.http-address.{{ cluster_name }}.{{ item }}</name>
-    <value>{{ item }}:50070</value>
+    <name>dfs.namenode.http-address.{{ cluster_name }}.{{ hostvars[item].ansible_ssh_host }}</name>
+    <value>{{ hostvars[item].ansible_ssh_host }}:50070</value>
   </property>
 
 {% endfor %}
   <property>
     <name>dfs.namenode.shared.edits.dir</name>
     <value>qjournal://{% for item in groups['journalnodes'] -%}
-             {{ item }}:8485{% if not loop.last %};{% endif %}
+             {{ hostvars[item].ansible_ssh_host }}:8485{% if not loop.last %};{% endif %}
                       {%- endfor %}/{{ cluster_name }}</value>
   </property>
 

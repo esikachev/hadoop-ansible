@@ -1,0 +1,5 @@
+- include: install.yml
+  when: deploy == "install"
+
+- include: test_oozie.yml
+  when: deploy == "test_oozie"

@@ -1,16 +1,16 @@
 - name: Create topic
   tags: test
-  command: kafka-topics.sh --zookeeper {{ groups['zookeepernodes'][0] }}:2181 --replication-factor {{ groups['kafka']|count }} --partitions 1 --create --topic test
+  command: kafka-topics.sh --zookeeper {{ hostvars[groups['zookeepernodes'][0]].ansible_ssh_host }}:2181 --replication-factor {{ groups['kafka']|count }} --partitions 1 --create --topic test
   run_once: true
 
 - name: Create test message
   tags: test
-  shell: echo 'test message' | kafka-console-producer.sh --broker-list {{ ansible_hostname }}:9092 --topic test
+  shell: echo 'test message' | kafka-console-producer.sh --broker-list {{ hostvars[inventory_hostname].ansible_ssh_host }}:9092 --topic test
   run_once: true
 
 - name: Read the message
   tags: test
-  command: kafka-console-consumer.sh --zookeeper {{ groups['zookeepernodes'][0] }}:2181 --max-messages 1 --topic test --from-beginning
+  command: kafka-console-consumer.sh --zookeeper {{ hostvars[groups['zookeepernodes'][0]].ansible_ssh_host }}:2181 --max-messages 1 --topic test --from-beginning
   run_once: true
   register: msg
 
@@ -22,5 +22,5 @@
 
 - name: Delete topic
   tags: test
-  command: kafka-topics.sh --zookeeper {{ groups['zookeepernodes'][0] }}:2181 --delete --topic test
+  command: kafka-topics.sh --zookeeper {{ hostvars[groups['zookeepernodes'][0]].ansible_ssh_host }}:2181 --delete --topic test
   run_once: true

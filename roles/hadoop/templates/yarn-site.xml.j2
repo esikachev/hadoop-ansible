@@ -39,7 +39,7 @@
 {% if groups['namenodes']|count > 1 %}
     <value>hdfs://{{ cluster_name }}/var/log/hadoop-yarn/apps</value>
     {% else %}
-    <value>hdfs://{{ groups['namenodes'][0] }}:8020/var/log/hadoop-yarn/apps</value>
+    <value>hdfs://{{ hostvars[groups['namenodes'][0]].ansible_ssh_host }}:8020/var/log/hadoop-yarn/apps</value>
 {% endif %}
   </property>
 
@@ -57,7 +57,7 @@
 
   <property>
     <name>yarn.resourcemanager.hostname</name>
-    <value>{{ groups['yarnresourcemanager'][0] }}</value>
+    <value>{{ hostvars[groups['yarnresourcemanager'][0]].ansible_ssh_host  }}</value>
   </property>
 
   <property>
@@ -120,13 +120,13 @@
   <property>
     <name>yarn.resourcemanager.ha.rm-ids</name>
     <value>{% for item in groups['yarnresourcemanager'] -%}
-              {{ item }}{% if not loop.last %},{% endif %}
+              {{ hostvars[item].ansible_ssh_host }}{% if not loop.last %},{% endif %}
                         {%- endfor %}</value>
   </property>
 
   <property>
     <name>yarn.resourcemanager.ha.id</name>
-    <value>{{ ansible_hostname }}</value>
+    <value>{{ hostvars[inventory_hostname].ansible_ssh_host }}</value>
   </property>
 
   <property>
@@ -142,7 +142,7 @@
   <property>
     <name>yarn.resourcemanager.zk-address</name>
     <value>{% for item in groups['zookeepernodes'] -%}
-          {{ item }}:2181{% if not loop.last %},{% endif %}
+          {{ hostvars[item].ansible_ssh_host }}:2181{% if not loop.last %},{% endif %}
           {%- endfor %}</value>
   </property>
 
@@ -160,32 +160,32 @@
 {% for item in groups['yarnresourcemanager'] %}
   <property>
     <name>yarn.resourcemanager.address</name>
-    <value>{{ item }}:8032</value>
+    <value>{{ hostvars[item].ansible_ssh_host }}:8032</value>
   </property>
 
   <property>
     <name>yarn.resourcemanager.scheduler.address</name>
-    <value>{{ item }}:8030</value>
+    <value>{{ hostvars[item].ansible_ssh_host }}:8030</value>
   </property>
 
   <property>
     <name>yarn.resourcemanager.webapp.https.address</name>
-    <value>{{ item }}:8090</value>
+    <value>{{ hostvars[item].ansible_ssh_host }}:8090</value>
   </property>
 
   <property>
     <name>yarn.resourcemanager.webapp.address</name>
-    <value>{{ item }}:8088</value>
+    <value>{{ hostvars[item].ansible_ssh_host }}:8088</value>
   </property>
 
   <property>
     <name>yarn.resourcemanager.resource-tracker.address</name>
-    <value>{{ item }}:8031</value>
+    <value>{{ hostvars[item].ansible_ssh_host }}:8031</value>
   </property>
 
   <property>
     <name>yarn.resourcemanager.admin.address</name>
-    <value>{{ item }}:8033</value>
+    <value>{{ hostvars[item].ansible_ssh_host }}:8033</value>
   </property>
 {% endfor %}
 

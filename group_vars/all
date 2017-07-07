@@ -28,10 +28,12 @@ fs_permissions_umask: '022'
 
 oozie_launcher_maxapps: 10
 oozie_launcher_weight: 1.0
+oozie_password: theoozie
 
 namenode_heapsize: 2048
 datanode_heapsize: 2048
 nodemanager_heapsize: 2048
+journalnode_heapsize: 1000
 
 dashboard_folder: /var/www/html/dashboard
 
@@ -41,3 +43,6 @@ log_retention_hours: 168
 controlled_shutdown_enable: true
 auto_create_topics_enable: true
 delete_topic_enable: true
+
+postgres_version: ""
+postgres_password: postgres
