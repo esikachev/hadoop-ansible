@@ -92,8 +92,9 @@
   run_once: true
 
 - name: Remove sql and .pgpass files
-  file: "{{ item }}"
+  file:
     state: absent
+    path: "{{ item }}"
   with_items:
     - /tmp/oozie.sql
     - /root/.pgpass
