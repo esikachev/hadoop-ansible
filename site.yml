@@ -1,9 +1,11 @@
 ---
-- hosts: all
+- name: Install common packages
+  hosts: all
   roles:
     - common
 
-- hosts: all
+- name: Install basic hadoop
+  hosts: all
   roles:
     - { role: hadoop, deploy: 'base' }
 
