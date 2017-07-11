@@ -48,6 +48,7 @@ Vagrant.configure(2) do |config|
             if N > 3
               ansible.groups["kafka"] = "machine2"
               ansible.groups["datanodes"] = "machine[3:#{N}]"
+              ansible.groups["postgresql"] = "machine[3:#{N}]"
             end
             ansible.sudo = true
           end

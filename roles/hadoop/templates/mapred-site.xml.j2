@@ -10,7 +10,7 @@
 
   <property>
     <name>mapreduce.jobhistory.address</name>
-    <value>{{ groups['yarnresourcemanager'][0] }}:10020</value>
+    <value>{{ hostvars[groups['yarnresourcemanager'][0]].ansible_ssh_host }}:10020</value>
   </property>
 
 <!-- tuning, uncomment if required

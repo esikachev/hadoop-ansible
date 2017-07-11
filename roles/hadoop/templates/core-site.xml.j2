@@ -8,7 +8,7 @@
 {% if groups['namenodes']|count > 1 %}
     <value>hdfs://{{ cluster_name }}</value>
 {% else %}
-    <value>hdfs://{{ groups['namenodes'][0] }}:8020</value>
+    <value>hdfs://{{ hostvars[groups['namenodes'][0]].ansible_ssh_host }}:8020</value>
 {% endif %}
   </property>
 
@@ -16,7 +16,7 @@
   <property>
     <name>ha.zookeeper.quorum</name>
     <value>{% for item in groups['zookeepernodes'] -%}
-              {{ item }}:2181{% if not loop.last %},{% endif %}
+              {{ hostvars[item].ansible_ssh_host }}:2181{% if not loop.last %},{% endif %}
            {%- endfor %}</value>
   </property>
 {% endif %}

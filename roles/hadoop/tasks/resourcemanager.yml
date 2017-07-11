@@ -4,11 +4,19 @@
   with_items:
     - hadoop-yarn-resourcemanager
 
+- name: Install history server package
+  tags: package
+  yum:  name={{ item }} state=latest
+  with_items:
+    - hadoop-mapreduce-historyserver
+  when: inventory_hostname == groups['yarnresourcemanager'][0]
+
 - name: Install default configurations
   tags: config
   copy: src=default/{{ item }} dest=/etc/default/{{ item }}
   with_items:
     - hadoop-yarn-resourcemanager
+    - hadoop-mapreduce-historyserver
 
 - name: Configure hdfs directories
   tags: config
@@ -32,3 +40,10 @@
   service: name={{ item }} state=restarted enabled=yes
   with_items:
     - hadoop-yarn-resourcemanager
+
+- name: Start services
+  tags: service
+  service: name={{ item }} state=restarted enabled=yes
+  with_items:
+    - hadoop-mapreduce-historyserver
+  when: inventory_hostname == groups['yarnresourcemanager'][0]

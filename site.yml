@@ -50,4 +50,27 @@
   hosts: kafka
   roles:
     - { role: kafka, deploy: 'install' }
+
+- name: Test kafka
+  tags: kafka
+  hosts: kafka
+  roles:
     - { role: kafka, deploy: 'test_kafka' }
+
+- name: Deploy postgresql
+  tags: postgresql
+  hosts: postgresql
+  roles:
+    - postgresql
+
+- name: Deploy oozie
+  tags: oozie
+  hosts: oozie
+  roles:
+    - { role: oozie, deploy: 'install' }
+
+- name: Test oozie
+  tags: oozie
+  hosts: oozie
+  roles:
+    - { role: oozie, deploy: 'test_oozie' }

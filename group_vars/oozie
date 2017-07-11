@@ -1,0 +1,10 @@
+oozie_heapsize: 1024
+
+oozie_launcher_maxapps: 10
+oozie_launcher_weight: 1.0
+
+oozie_ext_classes: []
+
+oozie_ext_schemas: []
+
+oozie_ext_properties: []
